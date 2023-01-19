@@ -1,6 +1,6 @@
 const util = {
   // возвращает случайное число от min до max
-  getRandomInt: (min, max) => {
+  getRandomInt (min, max) {
     if (min < 0 || max < 0) {
       return -1;
     }
@@ -11,18 +11,18 @@ const util = {
   },
 
   // проверяет, является ли длина строки меньше переданной максимальной длины
-  isValidLength: (string, maxLength) => {
+  isValidLength (string, maxLength) {
     return (string.length <= maxLength);
   },
 
   // возвращает перемешанный массив уникальных чисел от 1 до указанного числа
-  getUniqueNumbersArray: (length) => {
+  getUniqueNumbersArray (length) {
     let numbers = [];
     for (let i = 1; i <= length; i++){
       numbers.push(i);
     }
     for (let i = 0; i < length; i++){
-      let tempIndex = util.getRandomInt(0, length - 1);
+      let tempIndex = this.getRandomInt(0, length - 1);
       let tempNumber = numbers[i];
       numbers[i] = numbers[tempIndex];
       numbers[tempIndex] = tempNumber;

@@ -4,7 +4,7 @@ const PHOTOS_COUNT = 25;
 
 const generate = {
   // генерирует случайное имя
-  name: () => {
+  name() {
     const firstNames = [
       'Оптимус',
       'Питер',
@@ -33,7 +33,7 @@ const generate = {
   },
 
   // генеригует текст сообщения
-  message: () => {
+  message () {
     let message = '';
     const templates = [
       'Всё отлично!',
@@ -52,7 +52,7 @@ const generate = {
   },
 
   // генеригует объект комментария со всеми полями
-  comment: (id, avatarUrl, message, name) => {
+  comment (id, avatarUrl, message, name) {
     return {
       id: id,
       avatar: avatarUrl,
@@ -62,17 +62,17 @@ const generate = {
   },
 
   // генерирует массив комментариев указанной длины
-  commentsArray: (count) => {
+  commentsArray (count) {
     let commensts = [];
     for (let i = 0; i < count; i++){
-      let comment = generate.comment(i, `img/avatar-${util.getRandomInt(1, 6)}.svg`, generate.message(), generate.name());
+      let comment = this.comment(i, `img/avatar-${util.getRandomInt(1, 6)}.svg`, generate.message(), generate.name());
       commensts.push(comment);
     }
     return commensts;
   },
 
   // генеригует информацию об одном объекте фотографии
-  photoInfo: (id, url, description, likes, commenstsArray) => {
+  photoInfo (id, url, description, likes, commenstsArray) {
     return {
       id: id,
       url: url,
@@ -83,7 +83,7 @@ const generate = {
   },
 
   // генерирует массив данных о фотографиях указанной длины
-  photoInfoArray: (photosCount = PHOTOS_COUNT) => {
+  photoInfoArray (photosCount = PHOTOS_COUNT) {
     photosCount;
     let photos = [];
     let idArray = util.getUniqueNumbersArray(photosCount);
@@ -92,8 +92,8 @@ const generate = {
       let url = `photos/${id}.jpg`
       let description = 'Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Одна над но жизни предупредила своих власти последний грамматики инициал!'
       let likes = util.getRandomInt(15, 200);
-      let commenstsArray = generate.commentsArray(util.getRandomInt(1, 5));
-      let photo = generate.photoInfo(id, url, description, likes, commenstsArray);
+      let commenstsArray = this.commentsArray(util.getRandomInt(1, 5));
+      let photo = this.photoInfo(id, url, description, likes, commenstsArray);
       photos.push(photo);
     }
     return photos;
