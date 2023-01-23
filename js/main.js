@@ -1,5 +1,5 @@
-'use strict';
+import { getPictureObjectsArray } from './data.js';
+import { renderPictures } from './render.js';
 
-import { util } from './util.js';
-import { generate } from './data-generation.js';
-
+const mainPicturesArray = getPictureObjectsArray();
+renderPictures(mainPicturesArray);
