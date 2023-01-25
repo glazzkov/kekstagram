@@ -27,3 +27,16 @@ export const bools = {
   isEscKey: (key) => key === 'Escape' || key === 'Esc',
   isValidLength: (string, maxLength) => (string.length <= maxLength),
 }
+// проверяет наличие дубликатов значений в массиве
+export const hasDuplicates = (array) => {
+  let maxCount = 1;
+  for (let i = 0; i < array.length; i++) {
+    let value = array[i];
+    let count = 0;
+    for (let j = 0; j < array.length; j++) {
+      count = (value === array[j]) ? count + 1 : count;
+    }
+    maxCount = (count > maxCount) ? count : maxCount;
+  }
+  return maxCount > 1;
+}
