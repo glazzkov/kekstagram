@@ -26,17 +26,41 @@ export const getUniqueNumbersArray = (length) => {
 export const bools = {
   isEscKey: (key) => key === 'Escape' || key === 'Esc',
   isValidLength: (string, maxLength) => (string.length <= maxLength),
-}
-// проверяет наличие дубликатов значений в массиве
-export const hasDuplicates = (array) => {
-  let maxCount = 1;
-  for (let i = 0; i < array.length; i++) {
-    let value = array[i];
-    let count = 0;
-    for (let j = 0; j < array.length; j++) {
-      count = (value === array[j]) ? count + 1 : count;
+  hasDuplicates: (array) => {
+    let maxCount = 1;
+    for (let i = 0; i < array.length; i++) {
+      let value = array[i];
+      let count = 0;
+      for (let j = 0; j < array.length; j++) {
+        count = (value === array[j]) ? count + 1 : count;
+      }
+      maxCount = (count > maxCount) ? count : maxCount;
     }
-    maxCount = (count > maxCount) ? count : maxCount;
-  }
-  return maxCount > 1;
+    return maxCount > 1;
+  },
 }
+// часто используемые DOM-элементы
+export const DOM = {
+  body: document.querySelector('body'),
+  picturesContainer: document.querySelector('.pictures'),
+  commentsContainer: document.querySelector('.social__comments'),
+  bigPictureContainer: document.querySelector('.big-picture'),
+  uploadSection: document.querySelector('.img-upload'),
+}
+// добавляет обработчик закрытия попапа
+export const addCloseEvent = (popup, closeButton) => {
+  const onPopupClose = (evt) => {
+    evt.preventDefault();
+    const isInputInFocus = evt.target.nodeName === 'INPUT' || evt.target.nodeName === 'TEXTAREA';
+    const isEsc = bools.isEscKey(evt.key)
+    const isClick = evt.type === 'click';
+    if ((isEsc || isClick) && !isInputInFocus) {
+      DOM.body.classList.remove('modal-open');
+      popup.classList.add('hidden');
+    }
+  }
+  closeButton.addEventListener('click', onPopupClose);
+  window.addEventListener('keyup', onPopupClose);
+}
+
+
