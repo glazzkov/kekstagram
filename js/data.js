@@ -2,6 +2,7 @@ import { getRandomInt, getUniqueNumbersArray } from './util.js';
 
 const PICTURES_COUNT = 25;
 
+//#region генерация временных данных
 // возвращает случайное имя
 export const getRandomName = () => {
   const firstNames = [
@@ -82,7 +83,6 @@ export const getPictureObject = (id, url, description, likes, commentsArray) => 
     comments: commentsArray,
   };
 }
-
 // возвращает массив из указанного числа случайных объектов изображений
 export const getPictureObjectsArray = (picturesCount = PICTURES_COUNT) => {
   let pictures = [];
@@ -98,4 +98,10 @@ export const getPictureObjectsArray = (picturesCount = PICTURES_COUNT) => {
   }
   return pictures;
 }
+//#endregion генерация временных данных
 
+export const getPictureById = (id, picturesArray = data) => {
+  return picturesArray.find(el => el.id == id)
+}
+
+export const data = getPictureObjectsArray();

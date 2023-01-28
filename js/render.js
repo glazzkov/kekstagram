@@ -1,7 +1,8 @@
 import { createPicture, createComment } from './components.js';
+import { DOM } from './util.js';
 
-const picturesContainer = document.querySelector('.pictures');
-const commentsContainer = document.querySelector('.social__comments');
+const picturesContainer = DOM.picturesContainer;
+const commentsContainer = DOM.commentsContainer;
 
 // добавляет массив изображений на страницу
 export const renderPictures = (picturesArray) => {

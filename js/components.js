@@ -1,5 +1,3 @@
-import { initBigPicture } from './big-picture.js';
-
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 
@@ -11,11 +9,10 @@ export const createPicture = (pictureObject) => {
   const commentsCount = newPicture.querySelector('.picture__comments');
 
   pictureImage.src = pictureObject.url;
+  newPicture.id = `picture-${pictureObject.id}`;
+  newPicture.href = `#picture-${pictureObject.id}`;
   likesCount.textContent = pictureObject.likes;
   commentsCount.textContent = pictureObject.comments.length;
-
-  initBigPicture(newPicture, pictureObject);
-
   return newPicture;
 }
 

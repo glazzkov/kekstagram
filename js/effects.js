@@ -82,8 +82,6 @@ const updateSlider = (effect) => {
       break;
   }
 
-  // console.log(min, max, step);
-
   slider.noUiSlider.updateOptions({
     range: {
       min: min,
@@ -96,8 +94,7 @@ const updateSlider = (effect) => {
 
 // выбор эффекта
 const selectEffect = (selector) => {
-  const effectId = selector.id.slice(7);
-
+  const effectId = selector.id.replace('effect-', '');
   const baseClass = 'effect-level__value';
   const newClass = `effects__preview--${effectId}`;
   const classList = (effectId === 'none') ? [baseClass] : [baseClass, newClass];

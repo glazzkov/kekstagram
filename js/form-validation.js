@@ -1,4 +1,4 @@
-import { hasDuplicates } from './util.js';
+import { bools } from './util.js';
 
 const uploadForm = document.querySelector('#upload-select-image');
 const hashtagsInput = uploadForm.querySelector('.text__hashtags');
@@ -11,7 +11,8 @@ const validityMessages = {
 };
 
 // проверяет валидность введенных хэштегов
-const validateHashtags = () => {
+const validateHashtags = (evt) => {
+  evt.preventDefault();
   hashtagsInput.value = hashtagsInput.value.replace(/[ ]{1,}/g, ' ');
   let value = hashtagsInput.value.trim();
   let tags = value.split(/[ ]{1,}/);
@@ -21,10 +22,9 @@ const validateHashtags = () => {
   }
   let message = '';
   message += (tags.length > 5) ? validityMessages.tagsCount : '';
-  message += (hasDuplicates(tags)) ? validityMessages.duplicateTags : '';
+  message += (bools.hasDuplicates(tags)) ? validityMessages.duplicateTags : '';
   let isError = false;
   for (let tag of tags) {
-    let temp = tag;
     let match = tag.match(/^#[a-zA-Zа-яА-ЯёЁ0-9]{1,20}/i);
 
     if (match) {
@@ -41,7 +41,5 @@ const validateHashtags = () => {
 }
 
 export const initValidation = () => {
-  hashtagsInput.addEventListener('input', () => {
-    validateHashtags();
-  });
+  hashtagsInput.addEventListener('input', validateHashtags);
 }
