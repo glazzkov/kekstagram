@@ -13,7 +13,7 @@ const slider = uploadForm.querySelector('.effect-level__slider')
 let currentEffectId = '';
 
 // применение эффекта к фото
-const showEffect = (value) => {
+export const showEffect = (value) => {
   switch (currentEffectId) {
     case 'chrome':
       imagePreview.style.filter = `grayscale(${value})`;
@@ -57,7 +57,7 @@ const createSlider = (min, max, step) => {
 }
 
 // обновление значений слайдера при смене эффекта
-const updateSlider = (effect) => {
+export const updateSlider = (effect) => {
   sliderContainer.classList.remove('hidden');
   let min = 0;
   let max = 1;
@@ -102,6 +102,15 @@ const selectEffect = (selector) => {
   currentEffectId = effectId;
   updateSlider(effectId);
 }
+
+export const setDefaultEffects = () => {
+  let noneEffect = effectItems[0].querySelector('#effect-none');
+  noneEffect.checked = true;
+  imagePreview.classList = ['effect-level__value'];
+  currentEffectId = '';
+  updateSlider('none');
+  showEffect('0');
+};
 
 // инициализация эффектов
 export const initEffects = () => {

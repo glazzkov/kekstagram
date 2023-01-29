@@ -1,5 +1,8 @@
+import { addOpenEvent } from './big-picture.js';
+
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
+const successPopupTemplate = document.querySelector('#success').content.querySelector('.success');
 
 // возвращает DOM-элемент изображения на основе переданного объекта
 export const createPicture = (pictureObject) => {
@@ -13,6 +16,7 @@ export const createPicture = (pictureObject) => {
   newPicture.href = `#picture-${pictureObject.id}`;
   likesCount.textContent = pictureObject.likes;
   commentsCount.textContent = pictureObject.comments.length;
+  addOpenEvent(newPicture, pictureObject);
   return newPicture;
 }
 
@@ -29,3 +33,11 @@ export const createComment = (commentObject) => {
   return newComment;
 }
 
+// возвращает DOM-элемент попапа об успешной загрузке изображения.
+export const createSuccessPopup = () => {
+  const popup = successPopupTemplate.cloneNode(true);
+  const popupButton = popup.querySelector('.success__button');
+  console.log(popup);
+  popupButton.addEventListener('click', () => popup.remove());
+  return popup;
+}

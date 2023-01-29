@@ -27,6 +27,7 @@ export const bools = {
   isEscKey: (key) => key === 'Escape' || key === 'Esc',
   isValidLength: (string, maxLength) => (string.length <= maxLength),
   hasDuplicates: (array) => {
+    array = array.map((item) => item.toLowerCase());
     let maxCount = 1;
     for (let i = 0; i < array.length; i++) {
       let value = array[i];

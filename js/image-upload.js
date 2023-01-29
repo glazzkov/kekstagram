@@ -1,4 +1,7 @@
 import { DOM, addCloseEvent } from './util.js';
+import { setDefaultEffects } from './effects.js'
+import { postNewPicture } from './api.js';
+import { createSuccessPopup } from './components.js';
 // DOM-элементы для управления загрузкой нового изображения
 const body = DOM.body;
 const uploadSection = DOM.uploadSection;
@@ -6,11 +9,14 @@ const uploadForm = uploadSection.querySelector('#upload-select-image');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
 const imagePreview = uploadForm.querySelector('.img-upload__preview img');
 const fileInput = uploadForm.querySelector('#upload-file');
+const hashtagsInput = uploadForm.querySelector('.text__hashtags');
+const descriptionInput = uploadForm.querySelector('.text__description');
 const scaleInput = uploadForm.querySelector('.scale__control--value');
 const effectSelectors = uploadForm.querySelector('.effects__list').children;
 const overlayCloseButton = uploadForm.querySelector('#upload-cancel');
 const scaleSmallerButton = uploadForm.querySelector('.scale__control--smaller');
 const scaleBiggerButton = uploadForm.querySelector('.scale__control--bigger');
+const resultMessageField = uploadForm.querySelector('.img-upload__result-message');
 
 // отображает изображение из инпута в форме и в миниатюрах эффектов
 const showUploadedImage = (file) => {
@@ -25,9 +31,31 @@ const showUploadedImage = (file) => {
   });
 }
 
+// показ сообщения об ошибке
+const showError = () => {
+  resultMessageField.classList.remove('hidden');
+  resultMessageField.textContent = 'Ошибка отправки данных. Повторите попытку.';
+}
+
+// скрытие сообщения об ошибке
+const hideMessage = () => {
+  resultMessageField.classList.add('hidden');
+  resultMessageField.textContent = '';
+}
+
+
 // установка значений по умолчанию в форму
 const setDefaultValues = () => {
-  scaleInput.value = '100%'
+  setDefaultEffects();
+  hideMessage();
+  uploadOverlay.classList.add('hidden');
+  body.classList.remove('modal-open');
+  fileInput.value = '';
+  imagePreview.src = '';
+  imagePreview.style.transform = '';
+  scaleInput.value = '100%';
+  hashtagsInput.value = '';
+  descriptionInput.value = '';
 }
 
 // добавляет обработчик события загрузки файла, открытия формы
@@ -37,7 +65,20 @@ const addUploadEvent = () => {
     uploadOverlay.classList.remove('hidden');
     body.classList.add('modal-open');
     showUploadedImage(fileInput.files[0]);
-    setDefaultValues();
+  });
+}
+
+// добавляет обработчик отправки формы
+const addSubmitEvent = () => {
+  uploadForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault()
+    const success = await postNewPicture(uploadForm);
+    if (success) {
+      setDefaultValues();
+      body.appendChild(createSuccessPopup());
+      return;
+    }
+    showError();
   });
 }
 
@@ -67,8 +108,12 @@ const onScaleButtonsClick = (evt) => {
 // инициализация формы
 export const initUpload = () => {
   setDefaultValues();
+  addSubmitEvent();
   addUploadEvent();
   addCloseEvent(uploadOverlay, overlayCloseButton);
+  overlayCloseButton.addEventListener('click', setDefaultValues);
   scaleSmallerButton.addEventListener('click', onScaleButtonsClick);
   scaleBiggerButton.addEventListener('click', onScaleButtonsClick);
+
 }
+
