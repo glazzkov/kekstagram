@@ -11,7 +11,7 @@
   <title>Кекстаграм</title>
 </head>
 
-<body>
+<body is="app-body">
   <main>
 
     <!-- Фильтрация изображений от других пользователей -->
@@ -25,11 +25,11 @@
     </section>
 
     <!-- Контейнер для изображений от других пользователей -->
-    <section class="pictures  container">
+    <section is="app-galery" class="pictures  container">
       <h2 class="pictures__title  visually-hidden">Фотографии других пользователей</h2>
 
       <!-- Поле для загрузки нового изображения на сайт -->
-      <section class="img-upload">
+      <section is="app-form" class="img-upload">
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
           <form class="img-upload__form" id="upload-select-image" action="https://23.javascript.pages.academy/kekstagram" method="post" enctype="multipart/form-data" autocomplete="off">
@@ -120,7 +120,6 @@
                   <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
                   <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
                 </fieldset>
-                <p class="img-upload__result-message hidden"></p>
                 <!-- Кнопка для отправки данных на сервер -->
                 <button type="submit" class="img-upload__submit" id="upload-submit">Опубликовать</button>
               </div>
@@ -134,7 +133,7 @@
     </section>
 
     <!-- Полноэкранный показ изображения -->
-    <section class="big-picture  overlay  hidden">
+    <section is="app-picture-viewer" class="big-picture  overlay  hidden">
       <h2 class="big-picture__title  visually-hidden">Просмотр фотографии</h2>
       <div class="big-picture__preview">
 
@@ -207,6 +206,7 @@
     </a>
   </template>
 
+  <!-- Шаблон комментария -->
   <template id="comment">
     <li class="social__comment">
       <img class="social__picture" src="#" alt="{{имя комментатора}}" width="35" height="35">
