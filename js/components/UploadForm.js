@@ -1,5 +1,8 @@
 /* global noUiSlider:readonly */
 import { Util } from './Util.js';
+import { ErrorMessage } from './ErrorMessage.js';
+import { SuccessMessage } from './SuccessMessage.js';
+import { Api } from './Api.js';
 
 // класс управления формой отправки фото на сервер
 export class UploadForm extends HTMLElement {
@@ -18,6 +21,8 @@ export class UploadForm extends HTMLElement {
   get $effectLevel() { return this._$effectLevel; }
   get $effectLevelValue() { return this._$effectLevelValue; }
   get $effectLevelSlider() { return this._$effectLevelSlider; }
+  get $errorMessage() { return this._$errorMessage; }
+  get $successMessage() { return this._$successMessage}
 
   constructor() {
     super();
@@ -39,11 +44,15 @@ export class UploadForm extends HTMLElement {
     this._$effectLevel = this.querySelector('.effect-level');
     this._$effectLevelValue = this.querySelector('.effect-level__value');
     this._$effectLevelSlider = this.querySelector('.effect-level__slider');
+    this._$errorMessage = new ErrorMessage();
+    this._$successMessage = new SuccessMessage();
 
     Util.addCloseEventHandler(this.$closeButton, this.hide);
 
     this.createSlider();
     this.setDefaultValues(true);
+    document.$appBody.appendChild(this.$errorMessage);
+    document.$appBody.appendChild(this.$successMessage);
 
     // обработчики событий
     this.$fileInput.addEventListener('input', (evt) => {
@@ -66,8 +75,17 @@ export class UploadForm extends HTMLElement {
       });
     }
 
-    this.$form.addEventListener('submit', (evt) => {
+    this.$form.addEventListener('submit', async (evt) => {
       evt.preventDefault();
+      try {
+        await Api.postNewPicture(this.$form);
+        this.setDefaultValues();
+        this.$successMessage.show();
+      } catch (error) {
+        this.$errorMessage.show();
+      }
+
+      this.hide();
     });
 
     this.$form.addEventListener('input', (evt) => {
@@ -134,7 +152,6 @@ export class UploadForm extends HTMLElement {
       this.description = '';
       this.effect = 'none';
       this.scale = '100%';
-      this.hideSlider();
     }
   }
 
@@ -146,6 +163,10 @@ export class UploadForm extends HTMLElement {
       let tags = value.split(/[ ]{1,}/);
       this.$hashtagsInput.setCustomValidity('');
       const message = 'Проверьте корректность введенных хештегов: \n - Длина тега должна быть не менее 1 символа, не считая #, и не более 20 символов вместе с #.\n - Хэштег должен начинаться с #, может состоять из букв латинского и русского алфавитов и цифр.\n - Максимальное допустимое количество тегов - 5.\n - Нельзя использовать один тег более 2-х раз. Регистр не учитывается.\n - Теги разделяются пробелами.';
+
+      if (value === '') {
+        return;
+      }
 
       if (tags.length > 5) {
         this.$hashtagsInput.setCustomValidity(message);
