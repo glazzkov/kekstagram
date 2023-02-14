@@ -9,28 +9,20 @@ export class Api {
 
   static get getPicturesData() {
     return async () => {
-      try {
-        const response = await fetch(this.GET_URL);
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        return error;
-      }
+      const response = await fetch(this.GET_URL);
+      const data = await response.json();
+      return data;
     }
   }
 
   static get postNewPicture() {
     return async (form) => {
-      try {
-        const response = await fetch(this.POST_URL, {
-          method: 'POST',
-          body: new FormData(form),
-        });
-        await response.json();
-        return true;
-      } catch (error) {
-        return error;
-      }
+      const response = await fetch(this.POST_URL, {
+        method: 'POST',
+        body: new FormData(form),
+      });
+      const json = await response.json()
+      return json;
     }
   }
 }
